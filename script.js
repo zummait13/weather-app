@@ -4,8 +4,6 @@ async function getWeatherData(location) {
     const APIKEY = '3V7UCZ9RMPXTS4MRDDMBJLU7P';
     const URL = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=${APIKEY}`; 
 
-    console.log(URL);
-
     try {
         const response = await fetch(URL, {mode:"cors"});
         const data = await response.json();
@@ -31,8 +29,19 @@ function client() {
 
 function displayWeather(data) {
     data.days.forEach((day) => {
-        console.log(`${day.datetime}: ${day.temp}`);
+        let celsiusTemp = fahrenheitToCelsius(day.temp);
+        console.log(`${day.datetime}: ${celsiusTemp} 'C`);
     });
+}
+
+function fahrenheitToCelsius(temp) {
+    return roundNumber((temp - 32) * 5/9);
+}
+
+function roundNumber(number) {
+    let num = Number(number)
+    let roundedString = num.toFixed(2);
+    return Number(roundedString);
 }
 
 client();
